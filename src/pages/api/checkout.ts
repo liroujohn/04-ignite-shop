@@ -1,5 +1,6 @@
 import { stripe } from '@/src/lib/stripe'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from 'next'
+import Stripe from 'stripe'
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,7 +16,7 @@ export default async function handler(
     return res.status(400).json({ error: 'Price ID is required' })
   }
 
-  const successUrl = `${process.env.NEXT_URL}/success`
+  const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`
   const cancelUrl = `${process.env.NEXT_URL}/`
 
   const checkoutSession = await stripe.checkout.sessions.create({
