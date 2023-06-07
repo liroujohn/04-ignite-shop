@@ -3,8 +3,11 @@ import { CartButton } from '../CartButton'
 import {
   CartClosed,
   CartContent,
+  CartFinalization,
   CartProduct,
+  CartProductDetails,
   CartProductImage,
+  FinalizationDetails,
 } from './styles'
 import { X } from 'phosphor-react'
 import Image from 'next/image'
@@ -36,8 +39,27 @@ export function Cart() {
                   height={93}
                 />
               </CartProductImage>
+
+              <CartProductDetails>
+                <p>Produto 1</p>
+                <strong>R$ 50.00</strong>
+                <button>Remover</button>
+              </CartProductDetails>
             </CartProduct>
           </section>
+          <CartFinalization>
+            <FinalizationDetails>
+              <div>
+                <span>Quantidade</span>
+                <p>2 itens</p>
+              </div>
+              <div>
+                <span>Valor total</span>
+                <p>R$ 100.00</p>
+              </div>
+            </FinalizationDetails>
+            <button>Finalizar comprar</button>
+          </CartFinalization>
         </CartContent>
       </Dialog.Portal>
     </Dialog.Root>
