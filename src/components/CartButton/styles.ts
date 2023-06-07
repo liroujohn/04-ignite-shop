@@ -7,6 +7,12 @@ export const CartButtonContainer = styled('button', {
   border: 'none',
   borderRadius: 6,
   position: 'relative',
+  cursor: 'pointer',
+
+  '&:disabled': {
+    opacity: 0.6,
+    cursor: 'not-allowed',
+  },
 
   width: '3rem',
   height: '3rem',
