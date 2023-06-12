@@ -55,7 +55,7 @@ export default function Home({ products }: HomeProps) {
                           <strong>{product.name}</strong>
                           <span>{product.price}</span>
                         </div>
-                        <CartButton color="green" />
+                        <CartButton color="green" size="large" />
                       </footer>
                     </Product>
                   </Link>

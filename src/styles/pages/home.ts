@@ -23,8 +23,8 @@ export const Product = styled('div', {
   cursor: 'pointer',
   position: 'relative',
   overflow: 'hidden',
-  width: '100%',
-  minHeight: 656,
+  width: '700px',
+  minHeight: 680,
 
   display: 'flex',
   alignItems: 'center',
