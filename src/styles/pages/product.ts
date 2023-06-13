@@ -67,8 +67,8 @@ export const ProductDetails = styled('div', {
       cursor: 'not-allowed',
     },
 
-    '&:not(:disabled)hover': {
-      backgroundColor: '$green300',
+    '&:not(:disabled):hover': {
+      background: '$green300',
     },
   },
 })

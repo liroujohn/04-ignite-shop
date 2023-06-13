@@ -10,41 +10,24 @@ import {
 import axios from 'axios'
 import { useState } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useCart } from '@/src/hooks/useCart'
+import { IProduct } from '@/src/contexts/CartContext'
 
 interface ProductProps {
-  product: {
-    id: string
-    name: string
-    imageUrl: string
-    price: string
-    description: string
-    defaultPriceId: string
-  }
+  product: IProduct
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false)
+  const { isFallback } = useRouter()
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
+  const { addToCart, checkIfProductAlreadyExists } = useCart()
 
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId,
-      })
-
-      const { checkoutUrl } = response.data
-
-      window.location.href = checkoutUrl
-    } catch (err) {
-      // Conectar com uma ferramenta de observabilidade (Datadog / Sentry)
-
-      setIsCreatingCheckoutSession(false)
-
-      alert('Falha ao redirecionar ao checkout')
-    }
+  if (isFallback) {
+    return <p>Loading...</p>
   }
+
+  const productAlreadyExists = checkIfProductAlreadyExists(product.id)
 
   return (
     <>
@@ -63,10 +46,12 @@ export default function Product({ product }: ProductProps) {
           <p>{product.description}</p>
 
           <button
-            disabled={isCreatingCheckoutSession}
-            onClick={handleBuyProduct}
+            disabled={productAlreadyExists}
+            onClick={() => addToCart(product)}
           >
-            Comprar agora
+            {productAlreadyExists
+              ? 'Produto já está no carrinho'
+              : 'Colocar no carrinho'}
           </button>
         </ProductDetails>
       </ProductContainer>
@@ -102,6 +87,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
           style: 'currency',
           currency: 'BRL',
         }).format(price.unit_amount / 100),
+        numberPrice: price.unit_amount / 100,
         description: product.description,
         defaultPriceId: price.id,
       },

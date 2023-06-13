@@ -88,6 +88,11 @@ export const CartProductDetails = styled('div', {
     color: '$green500',
     fontSize: '1rem',
     fontWeight: 700,
+    transition: '0.3s',
+
+    '&:hover': {
+      color: '$green300',
+    },
   },
 })
 
