@@ -12,6 +12,7 @@ import { CartButton } from '../components/CartButton'
 import { useCart } from '../hooks/useCart'
 import { IProduct } from '../contexts/CartContext'
 import { MouseEvent } from 'react'
+import { ProductSkeleton } from '../components/productSkeleton'
 
 interface HomeProps {
   products: IProduct[]
@@ -43,7 +44,10 @@ export default function Home({ products }: HomeProps) {
         <HomeContainer>
           <div className="embla" ref={emblaRef}>
             <SliderContainer className="embla__container container">
-              {products.map((product) => {
+              <ProductSkeleton className="embla__slide" />
+              <ProductSkeleton className="embla__slide" />
+              <ProductSkeleton className="embla__slide" />
+              {/* {products.map((product) => {
                 return (
                   <Link
                     href={`/product/${product.id}`}
@@ -73,7 +77,7 @@ export default function Home({ products }: HomeProps) {
                     </Product>
                   </Link>
                 )
-              })}
+              })} */}
             </SliderContainer>
           </div>
         </HomeContainer>
