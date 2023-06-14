@@ -11,7 +11,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { CartButton } from '../components/CartButton'
 import { useCart } from '../hooks/useCart'
 import { IProduct } from '../contexts/CartContext'
-import { MouseEvent } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { ProductSkeleton } from '../components/productSkeleton'
 
 interface HomeProps {
@@ -19,11 +19,19 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
+  const [isLoading, setIsLoading] = useState(true)
   const [emblaRef] = useEmblaCarousel({
     align: 'start',
     skipSnaps: false,
     dragFree: true,
   })
+
+  useEffect(() => {
+    // fake loading to use the skeleton loading from figma
+    const timeOut = setTimeout(() => setIsLoading(false), 2000)
+
+    return () => clearTimeout(timeOut)
+  }, [])
 
   const { addToCart, checkIfProductAlreadyExists } = useCart()
 
@@ -44,40 +52,47 @@ export default function Home({ products }: HomeProps) {
         <HomeContainer>
           <div className="embla" ref={emblaRef}>
             <SliderContainer className="embla__container container">
-              <ProductSkeleton className="embla__slide" />
-              <ProductSkeleton className="embla__slide" />
-              <ProductSkeleton className="embla__slide" />
-              {/* {products.map((product) => {
-                return (
-                  <Link
-                    href={`/product/${product.id}`}
-                    key={product.id}
-                    prefetch={false}
-                  >
-                    <Product className="embla__slide">
-                      <Image
-                        src={product.imageUrl}
-                        alt=""
-                        width={520}
-                        height={480}
-                      />
+              {isLoading ? (
+                <>
+                  <ProductSkeleton className="embla__slide" />
+                  <ProductSkeleton className="embla__slide" />
+                  <ProductSkeleton className="embla__slide" />
+                </>
+              ) : (
+                <>
+                  {products.map((product) => {
+                    return (
+                      <Link
+                        href={`/product/${product.id}`}
+                        key={product.id}
+                        prefetch={false}
+                      >
+                        <Product className="embla__slide">
+                          <Image
+                            src={product.imageUrl}
+                            alt=""
+                            width={520}
+                            height={480}
+                          />
 
-                      <footer>
-                        <div>
-                          <strong>{product.name}</strong>
-                          <span>{product.price}</span>
-                        </div>
-                        <CartButton
-                          color="green"
-                          size="large"
-                          disabled={checkIfProductAlreadyExists(product.id)}
-                          onClick={(e) => handleAddToCart(e, product)}
-                        />
-                      </footer>
-                    </Product>
-                  </Link>
-                )
-              })} */}
+                          <footer>
+                            <div>
+                              <strong>{product.name}</strong>
+                              <span>{product.price}</span>
+                            </div>
+                            <CartButton
+                              color="green"
+                              size="large"
+                              disabled={checkIfProductAlreadyExists(product.id)}
+                              onClick={(e) => handleAddToCart(e, product)}
+                            />
+                          </footer>
+                        </Product>
+                      </Link>
+                    )
+                  })}
+                </>
+              )}
             </SliderContainer>
           </div>
         </HomeContainer>
